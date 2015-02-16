@@ -1,10 +1,11 @@
+messages = new Mongo.Collection(null);
+
+
 console.log("Starting")
 
 // Connect to MQTT via websockets.
 // NOTE: This assumes you are running your browser on the same machine as the server!!!
-client = mqtt.connect("ws://localhost:9001", {
-	clientId: "fromBrowser"
-});
+client = mqtt.connect("ws://localhost:9001");
 
 client.on("connect", function() {
 	console.log("Connected")
@@ -12,7 +13,7 @@ client.on("connect", function() {
 
 client.subscribe("test/topic");
 
-client.publish("test/topic", "bunch of stuff");
+client.publish("test/topic", "things of stuff");
 
 topicmap = [
 	{topic: "user/+id/online", 				action: "upsertTopic", 	collection: "onlineUsers" },
@@ -30,7 +31,9 @@ mqttRouter = {
 
 client.on("message", function(topic, payload) {
 	console.log(topic, payload.toString());
-	mqttRouter.route(topicmap);
+	//mqttRouter.route(topicmap);
+	messages.insert({topic: topic, payload: payload.toString()});
+
 });
 
 // counter starts at 0
@@ -42,7 +45,7 @@ Template.hello.helpers({
 		return Session.get('counter');
 	},
 	messages: function() {
-		//return MQTT.messages.find({topic: 'test/topic'});
+		return messages.find({});
 	}
 });
 
@@ -51,10 +54,11 @@ Template.hello.helpers({
 Template.hello.events({
 	'click #subscribe': function() {
 		console.log("Subscribing");
-		MQTT.subscribe("test/topic");
+		client.subscribe("test/topic");
 	},
-	'click #click': function() {
+	'click #publish': function() {
 		// increment the counter when button is clicked
 		Session.set('counter', Session.get('counter') + 1);
+		client.publish("test/topic", "more stuff" + new Date().toString());
 	}
 });

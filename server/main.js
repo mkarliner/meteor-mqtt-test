@@ -33,9 +33,9 @@ function setup() {
 	console.log('Mosca server is up and running');
 }
 
-server.on('clientConnected', function(client) {
-	console.log('client connected', client.id);
-});
+// server.on('clientConnected', function(client) {
+// 	console.log('client connected', client.id);
+// });
 
 // fired when a message is received
 //NOTE: This is not a subscribe, (see below), it shows *everything* published, including system message.
@@ -49,8 +49,8 @@ server.on('clientConnected', function(client) {
 mqttClient = mqtt.connect('mqtt://localhost:1883', {
 	clientId: "fromServer"
 });
-mqttClient.on("connect", function(param) {
-	console.log("Connected", param);
+mqttClient.on("connect", function() {
+	console.log("Connected");
 
 	mqttClient.on("message", function(param, p2) {
 		console.log("Server message", param, p2);
@@ -60,7 +60,7 @@ mqttClient.on("connect", function(param) {
 		console.log("Wahhhh");
 	})
 
-	mqttClient.publish("pubtest", "hello world", function() {
+	mqttClient.publish("test/topic", "hello world", function() {
 		console.log("Sent Sir!");
 	});
 });

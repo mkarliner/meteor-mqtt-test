@@ -10,12 +10,12 @@
 
 <template name="hello">
 	<button id="subscribe">Subscribe</button>
-  <button id="click">Click Me</button>
+  <button id="publish">Publish</button>
   <p>You've pressed the button {{counter}} times.</p>
   
   {{#each messages}}
   	  <div>
-  	  	{{topic}}:{{message}}
+  	  	{{topic}}:{{payload}}
   	  </div>
  {{/each}}
 </template>
