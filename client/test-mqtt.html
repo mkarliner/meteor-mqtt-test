@@ -1,0 +1,21 @@
+<head>
+  <title>test-mqtt</title>
+</head>
+
+<body>
+  <h1>Welcome to Meteor!</h1>
+
+  {{> hello}}
+</body>
+
+<template name="hello">
+	<button id="subscribe">Subscribe</button>
+  <button id="click">Click Me</button>
+  <p>You've pressed the button {{counter}} times.</p>
+  
+  {{#each messages}}
+  	  <div>
+  	  	{{topic}}:{{message}}
+  	  </div>
+ {{/each}}
+</template>
